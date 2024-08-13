@@ -28,15 +28,15 @@ final class TodoProvider {
       final response = await http
           .get(Uri.parse('https://jsonplaceholder.typicode.com/todos'));
       final todoListJson = jsonDecode(response.body) as List;
-      final List<TodoModel> todos = todoListJson
-          .map((remoteTodo) => TodoModel.fromJson(remoteTodo))
-          .toList();
-      if (todos.isEmpty) {
+      if (todoListJson.isEmpty) {
         _todoScreenState.value = Empty();
         return;
       }
+      final List<TodoModel> todos = todoListJson
+          .map((remoteTodo) => TodoModel.fromJson(remoteTodo))
+          .toList();
       _todoScreenState.value = Success(todos: todos);
-    } catch (error) {
+    } catch (_) {
       _todoScreenState.value = Error(message: "Failed to fetch todos");
     }
   }
